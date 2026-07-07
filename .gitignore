@@ -1,0 +1,30 @@
+# Build outputs
+*.o
+*.obj
+*.elf
+*.hex
+*.bin
+*.map
+*.out
+*.a
+*.lib
+*.d
+*.dep
+
+# IDE files
+.vscode/
+.idea/
+*.uvguix.*
+*.uvoptx
+*.scvd
+*.dbgdt
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Debug
+JLinkLog.txt
