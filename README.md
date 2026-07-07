@@ -5,6 +5,57 @@ Ultra-Lite Driver (ULD) for the STMicroelectronics **VL53LMZ** Time-of-Flight (T
 > **Driver version:** VL53LMZ_2.0.9  
 > **Original copyright:** STMicroelectronics (2023)
 
+---
+
+##  项目介绍 / Introduction
+
+**VL53LMZ ULD Driver** 是 STMicroelectronics（意法半导体）VL53LMZ 系列 ToF 激光测距传感器的超轻量驱动库（Ultra-Lite Driver），专为嵌入式 MCU 平台移植和二次开发而整理。
+
+本仓库将官方的 ULD 驱动代码独立出来，去除了特定平台的耦合依赖，**仅需实现 6 个平台抽象函数**即可适配任意 MCU（STM32、ESP32、Infineon CYT4BB7 等），方便快速集成到各类嵌入式项目中。
+
+###  传感器简介
+
+VL53LMZ 系列是 ST 推出的**多区域（Multi-Zone）ToF 测距传感器**，采用 940nm VCSEL 激光，基于 FlightSense™ 飞行时间技术，可在任何光照条件下实现精确测距。目前已验证支持以下模块：
+
+| 型号 | 分辨率 | 最大距离 | 适用场景 |
+|------|--------|----------|----------|
+| VL53L5CX | 4×4 / 8×8 | ~4m | 多区域测距、物体检测 |
+| VL53L7CX | 4×4 / 8×8 | ~3.5m | 低功耗人体存在检测 |
+| VL53L8CX | 4×4 / 8×8 | ~4m | 增强型，支持同步引脚 |
+
+### ✨ 主要特性
+
+- **多区域测距**：支持 4×4（16 区）或 8×8（64 区）分辨率
+- **多目标检测**：每区最多 4 个目标
+- **运动检测**：内置运动指示器（Motion Indicator）
+- **双模式**：连续模式 / 自主模式（可设精确积分时间）
+- **低功耗**：支持睡眠 / 唤醒模式
+- **I2C 通信**：默认地址 0x52，可配置多传感器级联
+- **眩光过滤**（Glare Filter）：减少盖板玻璃反射干扰
+- **平台无关**：仅需实现 6 个 HAL 函数，无 RTOS 依赖
+
+###  硬件连接
+
+```
+VL53LMZ 模块           MCU
+┌──────────┐        ┌──────┐
+│  VDD     │───────▶│ 3.3V │
+│  GND     │────────│ GND  │
+│  SDA     │────────│ SDA  │
+│  SCL     │────────│ SCL  │
+│  LPn     │────────│ GPIO │ (可选：多传感器时用于切换)
+│  INT      │────────│ GPIO │ (可选：中断引脚)
+└──────────┘        └──────┘
+```
+
+>  ⚠️ 注意：VL53L5CX/L7CX 需要 **AVDD = 3.3V** 且 IO 电平匹配。部分模块上已经有 LDO 和电平转换电路，请以实际模块原理图为准。
+
+###  移植说明
+
+本仓库**不依赖任何特定 MCU 平台**。要适配你的硬件，只需创建一个 `platform.h` 文件，实现以下 6 个函数即可。详见下方 [Platform Dependencies](#platform-dependencies) 章节。
+
+---
+
 ## Overview
 
 The VL53LMZ is a multi-zone ToF sensor with:
