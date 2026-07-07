@@ -11,7 +11,9 @@ Ultra-Lite Driver (ULD) for the STMicroelectronics **VL53LMZ** Time-of-Flight (T
 
 **VL53LMZ ULD Driver** 是 STMicroelectronics（意法半导体）VL53LMZ 系列 ToF 激光测距传感器的超轻量驱动库（Ultra-Lite Driver），专为嵌入式 MCU 平台移植和二次开发而整理。
 
-本仓库将官方的 ULD 驱动代码独立出来，去除了特定平台的耦合依赖，**仅需实现 6 个平台抽象函数**即可适配任意 MCU（STM32、ESP32、Infineon CYT4BB7 等），方便快速集成到各类嵌入式项目中。
+本仓库基于[**逐飞开源库（Seekfree CYT4BB Opensource Library）**](https://github.com/JIA-Ze-YANG/sixuanyi)开发，提供了 **VL53L8（VL53L8CX）的软件 I2C 驱动例程**以及相关烧录固件数据（`vl53lmz_buffers.h` 中的固件二进制与校准参数）。去除了特定平台的耦合依赖，**仅需实现 6 个平台抽象函数**即可适配任意 MCU（STM32、ESP32、Infineon CYT4BB7 等），方便快速集成到各类嵌入式项目中。
+
+> ⚠️ **使用注意**：由于软件 I2C 采用阻塞式读取数据，在与 IMU、其他环境传感器、姿态传感器等**多传感器并用**时，建议将 VL53L8 的数据读取放在**主循环**中执行，避免阻塞其他传感器的实时数据采集。
 
 ###  传感器简介
 
